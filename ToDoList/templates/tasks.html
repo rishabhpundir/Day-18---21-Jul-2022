@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}To Do List - Tasks{% endblock title %}
+{% block tasks_active %}active{% endblock tasks_active %}
+{% load static %}
+{% get_media_prefix as MEDIA_URL %}
+{% block body %}
+
+<div class="container my-3">
+
+
+    <h1 class="text-center my-5">Here is your TO-DO List!</h1>
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Task Title</th>
+            <th scope="col">Task Description</th>
+            <th scope="col">Time</th>
+            <th scope="col">Image</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for task in tasks %}
+          <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{task.TaskTitle}}</td>
+            <td>{{task.TaskDesc}}</td>
+            <td>{{task.Time}}</td>
+            <td><a href="{% get_media_prefix %}{{ task.TaskImg }}">{{task.TaskTitle}}</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+
+</div>
+
+{% endblock body %}
