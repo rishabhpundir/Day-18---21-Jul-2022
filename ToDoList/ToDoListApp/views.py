@@ -1,26 +1,36 @@
-from django.shortcuts import render
-from ToDoList.settings import MEDIA_ROOT, MEDIA_URL
+from django.shortcuts import render, HttpResponseRedirect
 from ToDoListApp.models import AddTask
+from templates.forms import UpdateTask
 
 # Create your views here.
 
 def homepage(request):
-    context = {'success' : False}
-    if request.method == 'POST':
-        task_title = request.POST['task_title']
-        task_desc = request.POST['task_desc']
-        if len(request.FILES) !=0:
-            task_img = request.FILES['task_img']
-
-        insert_task = AddTask(TaskTitle=task_title, TaskDesc=task_desc, TaskImg = task_img)
-        insert_task.save()
-        context = {'success' : True}
-
-    return render(request, 'homepage.html', context)
+    if request.method == "POST":
+        form = UpdateTask(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/tasks')
+    else:
+        form = UpdateTask
+    
+    return render(request, 'homepage.html', {'form':form,})
 
 def tasks(request):
     allTasks = AddTask.objects.all()
-    context = {'tasks' : allTasks}
-    return render(request, 'tasks.html', context)
+    return render(request, 'tasks.html', {'tasks' : allTasks,})
+
+def update_task(request, task_id):
+    task= AddTask.objects.get(pk=task_id)
+    form = UpdateTask(request.POST or None, request.FILES or None, instance=task)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect(f'/tasks?updated=True')
+    return render(request, 'update_task.html', {'form': form,})
+
+def delete_task(request, task_id):
+    task_del = AddTask.objects.get(pk=task_id)
+    task_del.delete()
+    print(task_del)
+    return HttpResponseRedirect('/tasks')
 
 

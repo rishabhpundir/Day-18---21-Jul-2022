@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% get_media_prefix as MEDIA_URL %}
+{% block title %}To Do List - Update{% endblock title %}
+
+{% block body %}
+<div class="container my-5">
+  <h1 class='text-center my-4'>Update Task</h1>
+  <form action='/' method='post' enctype='multipart/form-data'>
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit" class="btn btn-dark">Update</button>
+  </form>
+</div>
+
+{% endblock body %}

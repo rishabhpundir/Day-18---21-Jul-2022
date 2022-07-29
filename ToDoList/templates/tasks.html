@@ -8,30 +8,34 @@
 <div class="container my-3">
 
 
-    <h1 class="text-center my-5">Here is your TO-DO List!</h1>
+  <h1 class="text-center my-5">Here is your TO-DO List!</h1>
 
-    <table class="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Task Title</th>
-            <th scope="col">Task Description</th>
-            <th scope="col">Time</th>
-            <th scope="col">Image</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for task in tasks %}
-          <tr>
-            <th scope="row">{{forloop.counter}}</th>
-            <td>{{task.TaskTitle}}</td>
-            <td>{{task.TaskDesc}}</td>
-            <td>{{task.Time}}</td>
-            <td><a href="{% get_media_prefix %}{{ task.TaskImg }}">{{task.TaskTitle}}</a></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+  <table class="table mb-5">
+    <thead>
+      <tr>
+        <h4>
+          <th scope="col">#</th>
+          <th scope="col">Task Title</th>
+          <th scope="col">Task Description</th>
+          <th scope="col">Time</th>
+          <th scope="col">Image</th>
+          <th scope="col">Action</th>
+        </h4>
+      </tr>
+    </thead>
+    <tbody>
+      {% for task in tasks %}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td>{{task.TaskTitle}}</td>
+        <td>{{task.TaskDesc}}</td>
+        <td>{{task.Time}}</td>
+        <td><img src="{% get_media_prefix %}{{task.TaskImg}}" width="100"></td>
+        <td><a href="{% url 'update_task_link' task.id %}" class="btn btn-primary mt-1 py-1">Update</a> <a href="{% url 'delete_task_link' task.id %}" class="btn btn-danger mt-1 py-1">Delete</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
 
 </div>
