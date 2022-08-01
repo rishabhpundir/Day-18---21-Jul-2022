@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, redirect
 from ToDoListApp.models import AddTask
 from templates.forms import UpdateTask
 
@@ -9,7 +9,7 @@ def homepage(request):
         form = UpdateTask(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/tasks')
+            return redirect('/tasks')
     else:
         form = UpdateTask
     
@@ -24,13 +24,13 @@ def update_task(request, task_id):
     form = UpdateTask(request.POST or None, request.FILES or None, instance=task)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect(f'/tasks?updated=True')
+        return redirect('/tasks?updated=True')
     return render(request, 'update_task.html', {'form': form,})
 
 def delete_task(request, task_id):
     task_del = AddTask.objects.get(pk=task_id)
     task_del.delete()
     print(task_del)
-    return HttpResponseRedirect('/tasks')
+    return redirect('/tasks')
 
 
